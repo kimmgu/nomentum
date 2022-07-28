@@ -1,6 +1,6 @@
 import './style.css'
 
-document.querySelector('#app').innerHTML = `
+document.querySelector('#app').innerHTML = /* html */ `
     <form id="login-form" class="hidden">
       <input
         required
@@ -10,14 +10,11 @@ document.querySelector('#app').innerHTML = `
       />
       <button>Log In</button>
     </form>
-
-    <h1 id="greeting" class="hidden"></h1>
+    <h1 id="clock">00:00:00</h1>
+    <h2 id="greeting" class="hidden"></h2>
 `
 
-// const loginForm = document.querySelector('#login-form')
-// const loginInput = loginForm.querySelector('input')
-// const loginButton = loginForm.querySelector('button')
-
+// Greeting
 const loginForm = document.querySelector('#login-form')
 const loginInput = document.querySelector('#login-form input')
 const greeting = document.querySelector('#greeting')
@@ -48,3 +45,17 @@ if (savedUsername === null) {
   // Show Greeting
   showGreeting(savedUsername)
 }
+
+// Clock
+const clock = document.querySelector('#clock')
+
+function getClock() {
+  const date = new Date()
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  clock.innerText = `${hours}:${minutes}:${seconds}`
+}
+
+getClock()
+setInterval(getClock, 1000)
