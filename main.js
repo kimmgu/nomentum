@@ -73,3 +73,13 @@ const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
 
 quote.innerText = randomQuote.quote
 author.innerText = randomQuote.author
+
+// Background
+
+const background = ['0.jpeg', '1.jpeg', '2.jpeg']
+const randomBackground =
+  background[Math.floor(Math.random() * background.length)]
+
+const bg = document.createElement('img')
+bg.src = `/background/${randomBackground}`
+document.body.append(bg)
