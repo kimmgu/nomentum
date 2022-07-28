@@ -1,4 +1,5 @@
 import './style.css'
+import { quotes } from './quotes'
 
 document.querySelector('#app').innerHTML = /* html */ `
     <form id="login-form" class="hidden">
@@ -12,6 +13,11 @@ document.querySelector('#app').innerHTML = /* html */ `
     </form>
     <h1 id="clock">00:00:00</h1>
     <h2 id="greeting" class="hidden"></h2>
+    <div id="quote">
+      <span></span>
+      <br />
+      <span></span>
+    </div>
 `
 
 // Greeting
@@ -59,3 +65,11 @@ function getClock() {
 
 getClock()
 setInterval(getClock, 1000)
+
+// Quotes
+const quote = document.querySelector('#quote span:first-child')
+const author = document.querySelector('#quote span:last-child')
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
+
+quote.innerText = randomQuote.quote
+author.innerText = randomQuote.author
