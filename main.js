@@ -13,6 +13,11 @@ document.querySelector('#app').innerHTML = /* html */ `
     </form>
     <h1 id="clock">00:00:00</h1>
     <h2 id="greeting" class="hidden"></h2>
+    <form id="todo-form">
+      <input style="width: 100%;" type="text" placeholder="What is your main focus for today?" required>
+    </form>
+    <ul id="todo-list">
+    </ul>
     <div id="quote">
       <span></span>
       <br />
@@ -83,3 +88,62 @@ const randomBackground =
 const bg = document.createElement('img')
 bg.src = `/background/${randomBackground}`
 document.body.append(bg)
+
+// To Do
+
+const toDoForm = document.getElementById('todo-form')
+const toDoInput = toDoForm.querySelector('input')
+const toDoList = document.getElementById('todo-list')
+
+const TASKS_KEY = 'tasks'
+
+let tasks = []
+
+function saveTasks() {
+  localStorage.setItem(TASKS_KEY, JSON.stringify(tasks))
+}
+
+function deleteTask(event) {
+  const li = event.target.parentElement
+  li.remove()
+  // console.log(typeof li.id) // string
+  tasks = tasks.filter((task) => task.id !== parseInt(li.id))
+  saveTasks()
+}
+
+function showTask(task) {
+  const li = document.createElement('li')
+  li.id = task.id
+  const span = document.createElement('span')
+  span.innerText = task.text
+  const btn = document.createElement('button')
+  btn.innerText = 'X'
+  btn.addEventListener('click', deleteTask)
+  li.appendChild(span)
+  li.appendChild(btn)
+  toDoList.appendChild(li)
+}
+
+function toDoSubmit(event) {
+  event.preventDefault()
+  // Copy the current value of the input to the task variable
+  const task = toDoInput.value
+  toDoInput.value = ''
+  const taskObj = {
+    text: task,
+    id: Date.now(),
+  }
+  tasks.push(taskObj)
+  showTask(taskObj)
+  saveTasks()
+}
+
+toDoForm.addEventListener('submit', toDoSubmit)
+
+const savedTasks = localStorage.getItem(TASKS_KEY)
+
+if (savedTasks !== null) {
+  const parsedTasks = JSON.parse(savedTasks)
+  tasks = parsedTasks
+  parsedTasks.forEach(showTask)
+}
