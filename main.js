@@ -23,6 +23,10 @@ document.querySelector('#app').innerHTML = /* html */ `
       <br />
       <span></span>
     </div>
+    <div id="weather">
+      <span></span>
+      <span></span>
+    </div>
 `
 
 // Greeting
@@ -147,3 +151,27 @@ if (savedTasks !== null) {
   tasks = parsedTasks
   parsedTasks.forEach(showTask)
 }
+
+// Weather
+
+const API_KEY = '649976bc6667f1412fbd055ffbb0a4d1'
+
+function successLocation(position) {
+  const lat = position.coords.latitude
+  const lon = position.coords.longitude
+  // console.log('latitude : ' + lat + ' longitude : ' + lon)
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const weather = document.querySelector('#weather span:first-child')
+      const city = document.querySelector('#weather span:last-child')
+      city.innerText = data.name
+      weather.innerText = `${data.weather[0].main} / ${data.main.temp}`
+    })
+}
+function errorLocation() {
+  alert('Continue allowing this site to access your location')
+}
+
+navigator.geolocation.getCurrentPosition(successLocation, errorLocation)
